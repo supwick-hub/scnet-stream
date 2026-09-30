@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "scnet-stream"
+dynamic = ["version"]
+description = "Streaming, flat-memory SCNet music source separation on Apple silicon via Core ML"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "Supriya Wickrematillake", email = "sup@terrific.life" }]
+dependencies = [
+    "numpy>=1.24",
+    "coremltools>=7.0; sys_platform == 'darwin'",
+]
+keywords = ["source separation", "stems", "scnet", "core ml", "apple silicon", "audio"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+]
+
+[project.urls]
+Homepage = "https://github.com/supwick-hub/scnet-stream"
+Issues = "https://github.com/supwick-hub/scnet-stream/issues"
+Changelog = "https://github.com/supwick-hub/scnet-stream/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+test = ["pytest>=7", "soundfile>=0.12"]
+
+[project.scripts]
+scnet-stream = "scnet_stream.cli:main"
+
+[tool.hatch.version]
+path = "src/scnet_stream/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/scnet_stream"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "real_model: needs the downloaded Core ML model (skipped when absent)",
+    "slow: takes tens of seconds",
+]
